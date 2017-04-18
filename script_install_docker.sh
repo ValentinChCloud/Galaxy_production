@@ -2,7 +2,7 @@
 
 #Set the .bashrc
 echo "#Galaxy stuff">>~/.bashrc
-echo "GALAXY_ROOT=$HOME/galaxy">>~/.bashrc
+echo "export GALAXY_ROOT="$HOME/galaxy"">>~/.bashrc
 #Add this line to add mirror for debian and search for docker
 #############################################
 echo "deb http://httpredir.debian.org/debian jessie-backports main">>/etc/apt/sources.list
@@ -31,7 +31,7 @@ test_path_interactive_set=$(cat $GALAXY_ROOT/config/galaxy.ini |grep "interactiv
 if [ -n "$test_path_ineractive"  ]
 then
 	#echo "The path is already set"
-	sed -i 's/\(#interactive_environment_plugins_directory =\)/interactive_environment_plugins_directory = config\/plugins\/interactive_environments/' galaxy.ini
+	sed -i 's/\(#interactive_environment_plugins_directory =\)/interactive_environment_plugins_directory = config\/plugins\/interactive_environments/' "$GALAXY_ROOT/config/galaxy.ini"
 fi
 #Add email user if give in line parameters
 #############################################
