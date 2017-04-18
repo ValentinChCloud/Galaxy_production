@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 #Set the .bashrc
 echo "#Galaxy stuff">>~/.bashrc
