@@ -1,12 +1,14 @@
 #!/bin/bash
-
+cd $HOME && \
+git clone -b release_17.01 https://github.com/galaxyproject/galaxy.git
 #Set the .bashrc
 echo "#Galaxy stuff">>~/.bashrc
 echo 'export GALAXY_ROOT="$HOME/galaxy"'>>~/.bashrc
 source ~/.bashrc
 #Add this line to add mirror for debian and search for docker
+########Make a if on debian use this #######
 #############################################
-echo "deb http://httpredir.debian.org/debian jessie-backports main">>/etc/apt/sources.list
+#echo "deb http://httpredir.debian.org/debian jessie-backports main">>/etc/apt/sources.list
 #Update modifications
 #############################################
 apt-get update -y
@@ -18,14 +20,24 @@ user_name=$(whoami)
 usermod -a -G docker $user_name
 #Add openrefine as interactive environnement
 #############################################
-mkdir /$HOME/openrefine-install && cd /$HOME/openrefine-install && git clone https://github.com/ValentinChCloud/OpenRefine-galaxy-ie 
-mkdir /$HOME/galaxy/config/plugins/interactive_environments/openrefine
+mkdir $HOME/openrefine-install && cd /$HOME/openrefine-install && git clone https://github.com/ValentinChCloud/OpenRefine-galaxy-ie 
+mkdir $HOME/galaxy/config/plugins/interactive_environments/openrefine
 path_galaxy_openrefine=$(echo $HOME/galaxy/config/plugins/interactive_environments/openrefine)
 path_install_openrefine=$(echo $HOME/openrefine-install/OpenRefine-galaxy-ie)
 mv $path_install_openrefine/GIE/config $path_galaxy_openrefine && \
 mv $path_install_openrefine/GIE/static $path_galaxy_openrefine && \
 mv $path_install_openrefine/GIE/templates $path_galaxy_openrefine
 rm -r $HOME/openrefine-install/OpenRefine-galaxy-ie/GIE
+
+#Check if galaxy.ini already exists
+galaxy_ini_check_return=$(ls /root/galaxy/config/ |grep '^galaxy.ini$')
+if [ -n "galaxy_ini_check_return" ]
+then
+	#echo "The file already exits"
+else
+	echo "Coping galaxy.ini.sample to galaxy.ini"
+	cp galaxy.ini.sample galaxy.ini
+fi
 #Add the path to the interactives environnements if isn't already set
 #############################################
 test_path_interactive_set=$(cat $GALAXY_ROOT/config/galaxy.ini |grep "interactive_environment_plugins_directory =" |cut -d"=" -f2)
@@ -33,6 +45,7 @@ if [ -n "$test_path_ineractive" ]
 then
 	#echo "The path is already set"
 else
+	echo "Add the path to config/plugins/interactive_environments to galaxy.ini"
 	sed -i 's/\(#interactive_environment_plugins_directory =\)/interactive_environment_plugins_directory = config\/plugins\/interactive_environments/' "$GALAXY_ROOT/config/galaxy.ini"
 fi
 #Add email user if give in line parameters
@@ -53,7 +66,6 @@ nvm install 0.10
 apt-get install -y sqlite3
 #Npm
 apt-get install -y npm
-
 
 cd $GALAXY_ROOT/lib/galaxy/web/proxy/js && npm install
 #Build openrefie image
