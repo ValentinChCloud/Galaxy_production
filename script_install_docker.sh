@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/bash
 
 #Set the .bashrc
 echo "#Galaxy stuff">>~/.bashrc
@@ -29,7 +29,7 @@ rm -r $HOME/openrefine-install/OpenRefine-galaxy-ie/GIE
 #Add the path to the interactives environnements if isn't already set
 #############################################
 test_path_interactive_set=$(cat $GALAXY_ROOT/config/galaxy.ini |grep "interactive_environment_plugins_directory =" |cut -d"=" -f2)
-if [ -n "$test_path_ineractive"  ]
+if [ -n "$test_path_ineractive" ]
 then
 	#echo "The path is already set"
 else
@@ -43,4 +43,24 @@ then
 else
 	sed -i "s/\(admin_users = .*\)/\1,$1/" "$GALAXY_ROOT/config/galaxy.ini"
 fi
+
+
+#Install node,sqlite3 and npm
+#Node
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+nvm install 0.10
+#Sqlite3
+apt-get install -y sqlite3
+#Npm
+apt-get install -y npm
+
+
+cd $GALAXY_ROOT/lib/galaxy/web/proxy/js && npm install
+#Build openrefie image
+#############################################
+cd $HOME/openrefine-install/OpenRefine-galaxy-ie
+docker build -t openrefine . 
+
+
+
 
