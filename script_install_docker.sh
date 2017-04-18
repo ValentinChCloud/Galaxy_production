@@ -31,11 +31,11 @@ rm -r $HOME/openrefine-install/OpenRefine-galaxy-ie/GIE
 
 #Check if galaxy.ini already exists
 galaxy_ini_check_return=$(ls /root/galaxy/config/ |grep '^galaxy.ini$')
-if [ -n "galaxy_ini_check_return" ]; then
+if [ -n "$galaxy_ini_check_return" ]; then
 	echo "The file already exits"
 else
 	echo "Coping galaxy.ini.sample to galaxy.ini"
-	cp galaxy.ini.sample galaxy.ini
+	cp $GALAXY_ROOT/config/galaxy.ini.sample $GALAXY_ROOT/config/galaxy.ini
 fi
 #Add the path to the interactives environnements if isn't already set
 #############################################
