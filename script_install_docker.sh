@@ -32,7 +32,7 @@ rm -r $HOME/openrefine-install/OpenRefine-galaxy-ie/GIE
 #Check if galaxy.ini already exists
 galaxy_ini_check_return=$(ls /root/galaxy/config/ |grep '^galaxy.ini$')
 if [ -n "galaxy_ini_check_return" ]; then
-	#echo "The file already exits"
+	echo "The file already exits"
 else
 	echo "Coping galaxy.ini.sample to galaxy.ini"
 	cp galaxy.ini.sample galaxy.ini
@@ -41,7 +41,7 @@ fi
 #############################################
 test_path_interactive_set=$(cat $GALAXY_ROOT/config/galaxy.ini |grep "interactive_environment_plugins_directory =" |cut -d"=" -f2)
 if [ -n "$test_path_ineractive" ]; then
-	#echo "The path is already set"
+	echo "The path is already set"
 else
 	echo "Add the path to config/plugins/interactive_environments to galaxy.ini"
 	sed -i 's/\(#interactive_environment_plugins_directory =\)/interactive_environment_plugins_directory = config\/plugins\/interactive_environments/' "$GALAXY_ROOT/config/galaxy.ini"
