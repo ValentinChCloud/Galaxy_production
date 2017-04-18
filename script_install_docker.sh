@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 #Set the .bashrc
 echo "#Galaxy stuff">>~/.bashrc
@@ -32,6 +32,7 @@ test_path_interactive_set=$(cat $GALAXY_ROOT/config/galaxy.ini |grep "interactiv
 if [ -n "$test_path_ineractive"  ]
 then
 	#echo "The path is already set"
+else
 	sed -i 's/\(#interactive_environment_plugins_directory =\)/interactive_environment_plugins_directory = config\/plugins\/interactive_environments/' "$GALAXY_ROOT/config/galaxy.ini"
 fi
 #Add email user if give in line parameters
