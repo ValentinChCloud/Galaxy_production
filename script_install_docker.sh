@@ -31,8 +31,7 @@ rm -r $HOME/openrefine-install/OpenRefine-galaxy-ie/GIE
 
 #Check if galaxy.ini already exists
 galaxy_ini_check_return=$(ls /root/galaxy/config/ |grep '^galaxy.ini$')
-if [ -n "galaxy_ini_check_return" ]
-then
+if [ -n "galaxy_ini_check_return" ]; then
 	#echo "The file already exits"
 else
 	echo "Coping galaxy.ini.sample to galaxy.ini"
@@ -41,8 +40,7 @@ fi
 #Add the path to the interactives environnements if isn't already set
 #############################################
 test_path_interactive_set=$(cat $GALAXY_ROOT/config/galaxy.ini |grep "interactive_environment_plugins_directory =" |cut -d"=" -f2)
-if [ -n "$test_path_ineractive" ]
-then
+if [ -n "$test_path_ineractive" ]; then
 	#echo "The path is already set"
 else
 	echo "Add the path to config/plugins/interactive_environments to galaxy.ini"
@@ -50,8 +48,7 @@ else
 fi
 #Add email user if give in line parameters
 #############################################
-if [ $# -ne "1" ]
-then
+if [ $# -ne "1" ]; then
 	echo "bonjour"
 else
 	sed -i "s/\(admin_users = .*\)/\1,$1/" "$GALAXY_ROOT/config/galaxy.ini"
@@ -61,6 +58,7 @@ fi
 #Install node,sqlite3 and npm
 #Node
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+source ~/.bashrc
 nvm install 0.10
 #Sqlite3
 apt-get install -y sqlite3
