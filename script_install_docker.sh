@@ -2,7 +2,8 @@
 
 #Set the .bashrc
 echo "#Galaxy stuff">>~/.bashrc
-echo "export GALAXY_ROOT="$HOME/galaxy"">>~/.bashrc
+echo 'export GALAXY_ROOT="$HOME/galaxy"'>>~/.bashrc
+source ~/.bashrc
 #Add this line to add mirror for debian and search for docker
 #############################################
 echo "deb http://httpredir.debian.org/debian jessie-backports main">>/etc/apt/sources.list
