@@ -1,4 +1,7 @@
 #!/bin/bash
+. ~/.nvm/nvm.sh
+. ~/.profile
+. ~/.bashrc
 cd $HOME && \
 git clone -b release_17.01 https://github.com/galaxyproject/galaxy.git
 #Set the .bashrc
@@ -25,8 +28,9 @@ mkdir $HOME/galaxy/config/plugins/interactive_environments/openrefine
 path_galaxy_openrefine=$(echo $HOME/galaxy/config/plugins/interactive_environments/openrefine)
 path_install_openrefine=$(echo $HOME/openrefine-install/OpenRefine-galaxy-ie)
 mv $path_install_openrefine/GIE/config $path_galaxy_openrefine && \
-mv $path_install_openrefine/GIE/static $path_galaxy_openrefine && \
-mv $path_install_openrefine/GIE/templates $path_galaxy_openrefine
+	mv $path_install_openrefine/GIE/static $path_galaxy_openrefine && \
+	mv $path_install_openrefine/GIE/templates $path_galaxy_openrefine
+	
 rm -r $HOME/openrefine-install/OpenRefine-galaxy-ie/GIE
 
 #Check if galaxy.ini already exists
@@ -41,7 +45,7 @@ fi
 #############################################
 test_path_interactive_set=$(cat $GALAXY_ROOT/config/galaxy.ini |grep "interactive_environment_plugins_directory =" |cut -d"=" -f2)
 if [ -n "$test_path_ineractive" ]; then
-	echo "The path is already set"
+	echo "The path is already set : $test_path_interactive_set"
 else
 	echo "Add the path to config/plugins/interactive_environments to galaxy.ini"
 	sed -i 's/\(#interactive_environment_plugins_directory =\)/interactive_environment_plugins_directory = config\/plugins\/interactive_environments/' "$GALAXY_ROOT/config/galaxy.ini"
@@ -57,6 +61,8 @@ fi
 
 #Install node,sqlite3 and npm
 #Node
+apt-get install nodejs
+ln -s /usr/bin/nodejs /sur/bin/node
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 source ~/.bashrc
 nvm install 0.10
@@ -64,7 +70,6 @@ nvm install 0.10
 apt-get install -y sqlite3
 #Npm
 apt-get install -y npm
-
 cd $GALAXY_ROOT/lib/galaxy/web/proxy/js && npm install
 #Build openrefie image
 #############################################
