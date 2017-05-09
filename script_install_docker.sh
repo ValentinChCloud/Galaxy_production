@@ -1,7 +1,4 @@
 #!/bin/bash
-. ~/.nvm/nvm.sh
-. ~/.profile
-. ~/.bashrc
 cd $HOME && \
 git clone -b release_17.01 https://github.com/galaxyproject/galaxy.git
 #Set the .bashrc
