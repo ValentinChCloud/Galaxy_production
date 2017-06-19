@@ -1,6 +1,6 @@
 #!/bin/bash
 cd $HOME && \
-git clone -b release_17.01 https://github.com/galaxyproject/galaxy.git
+git clone -b release_17.05 https://github.com/galaxyproject/galaxy.git
 #Set the .bashrc
 echo "#Galaxy stuff">>~/.bashrc
 echo 'export GALAXY_ROOT="$HOME/galaxy"'>>~/.bashrc
