@@ -59,7 +59,7 @@ fi
 #Install node,sqlite3 and npm
 #Node
 apt-get install nodejs
-ln -s /usr/bin/nodejs /sur/bin/node
+ln -s /usr/bin/nodejs /usr/bin/node
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 source ~/.bashrc
 nvm install 0.10
