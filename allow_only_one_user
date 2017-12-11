@@ -1,0 +1,16 @@
+https://github.com/galaxyproject/galaxy/issues/5107
+#5107
+We achieved the same effect with some fancy proxying. E.g:
+
+	location / {
+		uwsgi_pass	127.0.0.1:4002;
+		include		uwsgi_params;
+		# Uncomment this section to permit only allowing one user to access Galaxy during mainteance periods.
+		#if ($remote_addr ~* aaa.bbb.ccc.ddd) {
+		#	uwsgi_pass	127.0.0.1:4002;
+		#}
+	}
+
+Whenever we need to activate "maintenance mode", we swap the first uwsgi_pass to something unrelated like :9999 which isn't a proper uwsgi server. This causes the default response for people visiting our galaxy to be the 5xx error page (which we customize quite heavily).
+
+Then the remote_addr is set to my IP address and only I can access galaxy while everyone else gets a nice maintenance page where I document what changes are being made, why, when the maintenance window is expected to end, etc.
