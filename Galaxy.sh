@@ -84,5 +84,5 @@ printf  "$GALAXY_ROOT/*.log { \n weekly \n rotate 8 \n copytruncate \n compress 
 #Install nginx and rm the /etc/nginx/nginx.conf and cp there nginx.conf.cample
 apt-get install -y nginx
 rm /etc/nginx/nginx.conf
-cp $__dir/nginx.conf /etc/nginx/nginx.conf
+cp $__dir/Nginx/nginx.conf /etc/nginx/nginx.conf
 service nginx restart
