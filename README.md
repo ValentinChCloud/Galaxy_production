@@ -84,11 +84,11 @@ sudo -u postgres createuser --interactive
 sudo -u galaxy createdb galaxy
 ```
 Now you have to give database acces to your galaxy server. You have to add  in `/etc/postgresql/9.5/main/pg_hba.conf` :
-`
+```
 #Type of connection		#Database		#User			#Adress							#Option connection ( don't need password in this case)
 
 host    				galaxy          galaxy          192.XXX.XXX.XX/32               trust
-`
+```
 And after that you have to specifiy than postgresql should accepte request from your galaxy server.
 Change in `/etc/postgresql/9.5/main/postgresql.conf`
 
@@ -110,7 +110,7 @@ and restart the server
  ```
  to
   ```
- database_connection = postgresql://galaxy:galaxy@192.XXX.XXX.XX:5432/galaxy
+ database_connection = postgresql://galaxy:password@192.XXX.XXX.XX:5432/galaxy
  ```
  Please refer to this ::: `postgresql://username:password@localhost/mydatabase` 
  
@@ -125,9 +125,9 @@ sudo -u toolshed createdb toolshed
 ```
 Now you have to give database acces to your toolsed server. You have too add  in /etc/postgresql/9.5/main/pg_hba.conf :
 #Type of connection		#Database		#User			#Adress							#Option connection ( don't need password in this case)
-host    				galaxy          galaxy          192.XXX.XXX.XX/32               trust
+host    				toolshed          toolshed          192.XXX.XXX.XX/32               trust
 
-And after that you have to specifiy than postgresql should accepte request from your galaxy server.
+And after that you have to specifiy than postgresql should accepte request from your toolshed server machine.
 
 `listen_addresses = 'localhost' -> '192.XXX.XXX.XX'`
 
@@ -141,7 +141,17 @@ and restart the server
 
 `  /etc/init.d/postgresql restart`
 
-
+After that you have to change in tool_shed.ini
+ ```
+ #database_connection = sqlite:///./database/community.sqlite?isolation_level=IMMEDIATE
+ ```
+ to
+  ```
+ database_connection = postgresql://toolshed:pasword@192.XXX.XXX.XX:5432/toolshed
+ ```
+ Please refer to this ::: `postgresql://username:password@localhost/mydatabase` 
+ 
+ localhost is the adress of the machine where your postgresql server is runing
 ###########################################################################
 # Galaxy interactive environnements : Docker
 
