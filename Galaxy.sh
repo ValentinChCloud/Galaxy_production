@@ -81,8 +81,8 @@ disable_dev_set
 # Logrotate galaxy's log files
 printf  "$GALAXY_ROOT/*.log { \n weekly \n rotate 8 \n copytruncate \n compress \n missingok \n notifempty \n}" > /etc/logrotate.d/galaxy
 
-#Install nginx and rm the /etc/nginx/nginx.conf and cp there nginx.conf.cample
+#Install nginx and rm the /etc/nginx/nginx.conf and cp there nginx.conf.sample
 apt-get install -y nginx
-rm /etc/nginx/nginx.conf
+rm /etc/nginx/nginx.conf || true
 cp $__dir/Nginx/nginx.conf /etc/nginx/nginx.conf
 service nginx restart

@@ -1,9 +1,7 @@
 ###########################################################################
 # Galaxy 17.09 in production, virtual machine on cloud based on Openstack
 
-
 # Create galaxy user
-
 First connect as root user to your new machine, then create a new user galaxy and give root Privileges 
 
 ```
@@ -22,6 +20,14 @@ Now use the script galaxy_install.sh
 cd $HOME
 bash galaxy_install.sh
 ```
+This script install : galaxy, docker, npm, node and nginx. For the last one an sample file is provided, you have to replace all the ip adress
+ofyour machine. Quickly you can get it with
+```
+hostname -I
+```
+get the first one.
+Otherwise, it's given on your user Openstack interface
+
 
 ###########################################################################
 # PostgreSQL
@@ -50,5 +56,17 @@ for all
 and
   /etc/init.d/postgresql restart
   
+ After that you have to change in galaxy.ini
+ ```
+ #database_connection = sqlite:///./database/universe.sqlite?isolation_level=IMMEDIATE
+ ```
+ to
+  ```
+ database_connection = postgresql://galaxy:galaxy@192.XXX.XXX.XX:5432/galaxy
+ ```
+ Please refer to this ::: postgresql://username:password@localhost/mydatabase
+ localhost is the adress of the machine where yout postgresql server is runing 
 ###########################################################################
+# Toolshed
+Now 
 
