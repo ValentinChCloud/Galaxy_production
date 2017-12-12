@@ -30,9 +30,6 @@ function docker_install {
         apt-get install -y sqlite3
         #Npm
         apt-get install -y npm
-		# TODO, nvm don't install new version
-		~/.nvm/nvm.sh install 0.10
-        cd $GALAXY_ROOT/lib/galaxy/web/proxy/js && npm install
 }
 
 
@@ -62,9 +59,10 @@ else
 echo "#Galaxy stuff">>~/.bashrc
 echo 'export GALAXY_ROOT="$HOME/galaxy"'>>~/.bashrc
 fi
+GALAXY_ROOT="$HOME/galaxy"
 #Check galaxy.ini already exists
 
-galaxy_ini_check_return=$(ls /root/galaxy/config/ |grep "galaxy.ini$") || true
+galaxy_ini_check_return=$(ls /$HOME/galaxy/config/ |grep "galaxy.ini$") || true
 echo " Que vaut $galaxy_ini_check_return"
 
 if [ -n "$galaxy_ini_check_return" ]; then
