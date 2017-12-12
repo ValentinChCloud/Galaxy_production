@@ -30,3 +30,4 @@ else
         echo "Coping tool_shed.ini.sample to tool_shed.ini"
         cp $GALAXY_ROOT/config/tool_shed.ini.sample  $GALAXY_ROOT/config/tool_shed.ini
 fi
+

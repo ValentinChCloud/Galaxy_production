@@ -24,7 +24,6 @@ function docker_install {
         #Install node,sqlite3 and npm
         apt-get install -y nodejs
         ln -s /usr/bin/nodejs /usr/bin/node ||true
-        wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
         
         #Sqlite3
         apt-get install -y sqlite3
