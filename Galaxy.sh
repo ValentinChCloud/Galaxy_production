@@ -50,7 +50,7 @@ function disable_dev_set {
 #############################################
 #apt-get update && sudo apt-get upgrade -y
 cd $HOME
-git clone -b release_17.09 https://github.com/galaxyproject/galaxy.git || true
+git clone -b release_17.05 https://github.com/galaxyproject/galaxy.git || true
 #Set the .bashrc
 if [ -n "$(cat ~/.bashrc |grep "GALAXY_ROOT")" ];then
         echo "GALAXY_ROOT already set"
@@ -69,8 +69,9 @@ if [ -n "$galaxy_ini_check_return" ]; then
 else
         echo "Coping galaxy.ini.sample to galaxy.ini"
         cp $GALAXY_ROOT/config/galaxy.ini.sample $GALAXY_ROOT/config/galaxy.ini
+		
 fi
-echo "Avant mon script"
+sed -i "s/127\.0\.0\.1/0\.0\.0\.0/g" $GALAXY_ROOT/config/galaxy.ini
 docker_install
 disable_dev_set
 
@@ -82,4 +83,5 @@ printf  "$GALAXY_ROOT/*.log { \n weekly \n rotate 8 \n copytruncate \n compress 
 apt-get install -y nginx
 rm /etc/nginx/nginx.conf || true
 cp $__dir/Nginx/nginx.conf /etc/nginx/nginx.conf
+sed -i "s/192\.168\.100\.67/$(hostname -I |cut -d" " -f1)/g" /etc/nginx/nginx.conf
 service nginx restart

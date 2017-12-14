@@ -12,7 +12,7 @@ __base="$(basename ${__file} .sh)"
 #############################################
 #apt-get update && sudo apt-get upgrade -y
 cd $HOME
-git clone -b release_17.09 https://github.com/galaxyproject/galaxy.git || true
+git clone -b release_17.05 https://github.com/galaxyproject/galaxy.git || true
 #Set the .bashrc
 if [ -n "$(cat ~/.bashrc |grep "GALAXY_ROOT")" ];then
         echo "GALAXY_ROOT already set"
@@ -20,7 +20,7 @@ else
 echo "#Galaxy stuff">>~/.bashrc
 echo 'export GALAXY_ROOT="$HOME/galaxy"'>>~/.bashrc
 fi
-
+GALAXY_ROOT="$HOME/galaxy"
 #Check galaxy.ini already exists
 
 toolshed_ini_check_return=$(ls /root/galaxy/config/ |grep "toolshed.ini$") || true
@@ -31,3 +31,4 @@ else
         cp $GALAXY_ROOT/config/tool_shed.ini.sample  $GALAXY_ROOT/config/tool_shed.ini
 fi
 
+pip install psycopg2

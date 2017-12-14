@@ -6,7 +6,8 @@ First connect as root user to your new machine, then create a new user galaxy an
 
 ```
 ssh root@192.XXX.XXX.XX
-
+#Change root password
+passwd root
 adduser galaxy
 # Choose password
 
@@ -18,15 +19,11 @@ visudo
 Now use the script galaxy_install.sh 
 ```
 cd $HOME
-bash galaxy_install.sh
+sudo bash galaxy_install.sh
 ```
-This script install : galaxy, docker, npm, node and nginx. For the last one an sample file is provided, you have to replace all the ip adress
-ofyour machine. Quickly you can get it with
-```
-hostname -I
-```
-get the first one.
-Otherwise, it's given on your user Openstack interface
+This script install : galaxy, docker, npm, node and nginx.
+
+
 
 You should downgrade node version , because galaxy work only with <0.11. We use Node Version Manager from[lien](https://github.com/creationix/nvm)
 ```
@@ -38,16 +35,24 @@ You should downgrade node version , because galaxy work only with <0.11. We use 
 	Then execute
 ```
 	wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+	source .bashrc
 	nvm install 0.10
 	nvm use 0.10
     cd $GALAXY_ROOT/lib/galaxy/web/proxy/js && npm install
+```
+You can check if it work with `node -v `should retourn
+```
+galaxy@65mo-galaxy-prod:~$ node -v
+v0.10.48
+
 ```
 ##	Tolshed
 ### Create Toolshed user and install it
 It's recommanded to install your toolshed on another machine.
 ```
 ssh root@192.XXX.XXX.XX
-
+#Change root password
+passwd root
 adduser toolshed
 # Choose password
 
@@ -63,18 +68,15 @@ bash toolshed.ini
 it will download, and copy config files.
 
 After that start the toolshed in daemon mod
-```
 
-```
-2- #database_connection = sqlite:///./database/community.sqlite?isolation_level=IMMEDIATE
-	As galaxy replace as follow  database_connection = postgresql://toolshed:toolshed@192.XXX.XXX.XX:5432/toolshed
-	Please refer to this ::: postgresql://username:password@localhost/mydatabase
-	localhost is the adress of the machine where yout postgresql server is runing
+
+
 # PostgreSQL
 ## Galaxy database
 * Start a new machine, connect ,change root password, add user, install postgreSql and create user and database galaxy *
 ```
 ssh root@192.XXX.XXX.XX
+#Change root password
 passwd root
 adduser galaxy
 apt-get update
@@ -179,6 +181,7 @@ pull it, but for somes images like Jupyter it could be really long, so do it bef
 	
 ```
 ssh root@192.XXX.XXX.XX
+passwd root
 
 adduser docker
 # Choose password
@@ -190,10 +193,9 @@ visudo
 then install docker
 
 ```
-        apt-get install -y docker.io
-        user_name=$(whoami)
-        usermod -a -G docker $user_name
-		docker -H 0.0.0.0:4243 -d
+apt-get install -y docker.io
+usermod -a -G docker $(whoami)
+dockerd -H 0.0.0.0:4243
 ```
 
 Then you have to change the config.ini file of your GIE . For example with jupyter
@@ -232,3 +234,23 @@ From [this](https://forums.docker.com/t/how-do-i-change-the-docker-image-install
 
 
 ## Files 
+In case on many users one solution to storage all their data is to use volume
+Once your volume mount, you have to move the data and create a symlink
+```
+mv $GALAXY_ROOT/database/files/ /path/to/your/partition
+ln -s /path/to/your/partition $GALAXY_ROOT/database/files/
+```
+Example
+```
+mkfs.ext4 /dev/vdb
+mount /dev/vdb /home/galaxy/data_Galaxy/
+mv $GALAXY_ROOT/database/files/ /home/galaxy/data_Galaxy/
+ln -s /home/galaxy/data_Galaxy/files/ $GALAXY_ROOT/database/files/
+```
+
+
+# Security groups
+To acces to your machine from the outside you need to open some port
+
+
+
