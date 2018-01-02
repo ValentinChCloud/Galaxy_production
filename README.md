@@ -1,5 +1,7 @@
 
 # Galaxy 17.09 in production, virtual machine on cloud based on Openstack
+This is an example and few scripts to configure an Galaxy server in production mod on a cloud based on Openstack.
+Many points are customizable, but there one configuration will be show.
 ##	Galaxy
 ### Create galaxy user and install it
 First connect as root user to your new machine, then create a new user galaxy and give root Privileges 
@@ -251,10 +253,17 @@ mkdir home/galaxy/data_Galaxy/
 mount /dev/vdb /home/galaxy/data_Galaxy/
 mv $GALAXY_ROOT/database/files/ /home/galaxy/data_Galaxy/
 ln -s /home/galaxy/data_Galaxy/files/ $GALAXY_ROOT/database/files/
+ln -s /home/galaxy/data_Galaxy/files/ $GALAXY_ROOT/database/files/
 ```
 
 
-# Security groups
+
+#Slurm
+## The Controler machine
+On your server-galaxy-machine use the script `install_slurm.sh`, it will install and configure slurm and munge.
+We give you an 'slurm.conf_example', based on the architecture of one big node host by an another machine dedicated to the cluster
+
+
 To acces to your machine from the outside you need to open some port
 
 

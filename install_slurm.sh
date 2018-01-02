@@ -7,22 +7,22 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename ${__file} .sh)"
 
-
-#Package munge + creating the secrete key don't forget to share it for all nodes 
+cd $HOME
+#Package munge + creating the secrete key don't forget to share it for all nodes
 apt update
-apt install -y libmunge-dev 
+apt install -y munge
 dd if=/dev/urandom bs=1 count=1024 >/etc/munge/munge.key
-# Need improvement to the next two lines in one only one 
+# Need improvement to the next two lines in one only one
 wget -N https://download.schedmd.com/slurm/slurm-17.11.0-0rc2.tar.bz2
-md5sum -c <<<"e1851c120199ea82b4aae414c7c82737 *$__dir/slurm-17.11.0-0rc2.tar.bz2"
+md5sum -c <<<"e1851c120199ea82b4aae414c7c82737 *slurm-17.11.0-0rc2.tar.bz2"
 
 #Installation slurm
 
-__slurm_dir="$__dir/slurm-17.11.0-0rc2"
-tar -xaf $slurm_dir.tar.bz2
-cd $slurm_dir
+__slurm_dir="$HOME/slurm-17.11.0-0rc2"
+tar -xaf $__slurm_dir.tar.bz2
+cd $__slurm_dir
 # TODO option to mutliple slurmd --enable-multiple-slurmd
-bash ./configure	
+bash ./configure
 make
 make install
 ldconfig -n /usr/local/lib
@@ -47,3 +47,8 @@ export DRMAA_LIBRARY_PATH=/usr/local/lib/libdrmaa.so
 #echo 'echo "Test executed on host $(hostname) by user $USER"' > test.drmaa
 #drmaa-run bash test.drmaa
 
+
+#Modifiy the slurm.conf with user paramters
+sed -i "s/ControlMachine=/ControlMachine=$(hostname -s)/g" $__dir/slurm.conf
+sed -i "s/ControlAddr=/ControlAddr=$(hostname -I |cut -d" " -f1)/g" slurm.conf
+cp $__dir/slurm.conf /usr/local/etc/slurm.conf
