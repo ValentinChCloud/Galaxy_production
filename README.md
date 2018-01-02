@@ -146,7 +146,7 @@ and restart the server
 
 `  /etc/init.d/postgresql restart`
 
-After that you have to change in tool_shed.ini
+After that you have to change in tool_shed.ini on the machine's toolshed
  ```
  #database_connection = sqlite:///./database/community.sqlite?isolation_level=IMMEDIATE
  ```
@@ -157,6 +157,10 @@ After that you have to change in tool_shed.ini
  Please refer to this ::: `postgresql://username:password@localhost/mydatabase` 
  
  localhost is the adress of the machine where your postgresql server is runing
+ 
+and in the  `galaxy/config/tool_sheds_conf.xml.sample`
+ <tool_shed name="Galaxy Main Tool Shed" url="https://toolshed.g2.bx.psu.edu/"/>
+
 # Galaxy interactive environnements : Docker
 
 You can have your Docker server and the Galaxy server on the same machine. It could be interesting in one case to launch your container on 
@@ -243,6 +247,7 @@ ln -s /path/to/your/partition $GALAXY_ROOT/database/files/
 Example
 ```
 mkfs.ext4 /dev/vdb
+mkdir home/galaxy/data_Galaxy/
 mount /dev/vdb /home/galaxy/data_Galaxy/
 mv $GALAXY_ROOT/database/files/ /home/galaxy/data_Galaxy/
 ln -s /home/galaxy/data_Galaxy/files/ $GALAXY_ROOT/database/files/

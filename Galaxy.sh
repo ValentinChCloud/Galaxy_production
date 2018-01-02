@@ -20,7 +20,6 @@ function docker_install {
                 echo "Add the path to config/plugins/interactive_environments to galaxy.ini"
                 sed -i 's/\(#interactive_environment_plugins_directory =\)/interactive_environment_plugins_directory = config\/plugins\/interactive_environments/' "$GALAXY_ROOT/config/galaxy.ini"
         fi
-        echo "Ca marche là?"
         #Install node,sqlite3 and npm
         apt-get install -y nodejs
         ln -s /usr/bin/nodejs /usr/bin/node ||true
@@ -29,6 +28,10 @@ function docker_install {
         apt-get install -y sqlite3
         #Npm
         apt-get install -y npm
+		
+		#Galaxy stuff 
+		cd $GALAXY_ROOT/lib/galaxy/web/proxy/js
+		sudo -u galaxy npm install
 }
 
 
