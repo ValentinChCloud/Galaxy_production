@@ -1,4 +1,7 @@
 
+## WORK IN PROGRESS, next update after dagobah training
+
+
 # Galaxy 17.09 in production, virtual machine on cloud based on Openstack
 This is an example and few scripts to configure an Galaxy server in production mod on a cloud based on Openstack.
 Many points are customizable, but there one configuration will be show.
